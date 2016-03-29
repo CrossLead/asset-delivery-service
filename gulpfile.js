@@ -1,3 +1,6 @@
+require('babel-register');
+require('babel-polyfill');
+
 var src = 'src/**/*.js',
   tests = 'test/**/*.js',
   gulp = require('gulp'),
@@ -16,8 +19,7 @@ gulp.task('build', function () {
 gulp.task('test', ['build'], function () {
     return gulp.src(tests, {read: false})
       .pipe(mocha({
-        reporter: 'spec',
-        require: ['babel-register']
+        reporter: 'spec'
       }));
 });
 

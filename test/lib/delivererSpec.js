@@ -32,7 +32,7 @@ describe('----------------- Deliverer Tests -----------------', () => {
       const stub = sinon.stub(new Source);
       mockDest.expects('send').calledWithExactly(stub);
 
-      deliverer = new Deliverer(stub, mockDest.object);
+      deliverer = new Deliverer(stub, [mockDest.object]);
       deliverer.send();
 
       mockDest.verify();
