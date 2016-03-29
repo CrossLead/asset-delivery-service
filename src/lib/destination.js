@@ -7,7 +7,7 @@ export default class Destination {
 
   constructor() {}
 
-  send() {
+  send(src) {
     throw new TypeError('send must be implemented');
   }
 }

@@ -7,8 +7,8 @@
 export default class Deliverer {
 
   /**
-   * @param  {Source} source
-   * @param  {Destination} destination
+   * @param  {Source} [source]
+   * @param  {Destination} [destination]
    */
   constructor(source, destination) {
     this._source = source;
@@ -16,11 +16,11 @@ export default class Deliverer {
   }
 
   /**
-   * Submit an email to the destination
+   * Submit the source to a destination
    * @return {void}
    */
   send() {
-
+    this._destination.send(this._source);
   }
 
   setSrc(src) {

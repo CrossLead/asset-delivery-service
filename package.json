@@ -26,6 +26,7 @@
   "homepage": "https://github.com/CrossLead/screenshot-deliverer#readme",
   "dependencies": {
     "aws-sdk": "^2.2.47",
+    "lodash": "^4.6.1",
     "nodemailer": "^2.3.0"
   },
   "devDependencies": {

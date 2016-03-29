@@ -20,3 +20,7 @@ gulp.task('test', ['build'], function () {
         require: ['babel-register']
       }));
 });
+
+gulp.task('tdd', function () {
+  return gulp.watch([tests, src], ['test']);
+});
