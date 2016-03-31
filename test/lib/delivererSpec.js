@@ -1,8 +1,8 @@
 import should from 'should';
 import sinon from 'sinon';
 import Deliverer from '../../dist/lib/deliverer';
-import Destination from '../../dist/lib/destination';
-import Source from '../../dist/lib/source';
+import EmailDestination from '../../dist/lib/destinations/emailDestination';
+import Source from '../../dist/lib/sources/source';
 
 describe('----------------- Deliverer Tests -----------------', () => {
   
@@ -27,8 +27,8 @@ describe('----------------- Deliverer Tests -----------------', () => {
   });
 
   context('#send', () => {
-    it('should call the Destination#send with a Source object', () => {
-      const mockDest = sinon.mock(new Destination);
+    it('should call the EmailDestination#send with a Source object', () => {
+      const mockDest = sinon.mock(new EmailDestination('eduncan@tapqa.com'));
       const stub = sinon.stub(new Source);
       mockDest.expects('send').calledWithExactly(stub);
 
