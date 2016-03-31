@@ -6,11 +6,14 @@
  */
 export default class EmailDestination {
 
-  constructor(emailAddress) {
-    if (!emailAddress)
-      throw new Error('Email Adress required');
+  constructor() {}
 
-    this.toAddress = emailAddress;
+  setToAddress(addr) {
+    throw new TypeError('setToAddress must be implemented');
+  }
+
+  setFromAddress(addr) {
+    throw new TypeError('setFromAddress must be implemented');
   }
 
   send(src) {
