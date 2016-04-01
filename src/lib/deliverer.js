@@ -11,11 +11,19 @@ export default class Deliverer {
    * @param  {Destination[]} [destinations]
    */
   constructor(sources, destinations) {
-    this._sources = sources instanceof Array 
+    if (sources) {
+      this._sources = sources instanceof Array 
             ? sources : [sources];
-
-    this._destinations = destinations instanceof Array 
+    } else {
+      this._sources = [];
+    }
+    
+    if (destinations) {
+      this._destinations = destinations instanceof Array 
                  ? destinations : [destinations];
+    } else {
+      this._destinations = [];
+    }
   }
 
   /**

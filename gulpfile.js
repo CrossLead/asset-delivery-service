@@ -13,7 +13,7 @@ gulp.task('build', function () {
     .pipe(sourcemaps.init())
     .pipe(babel())
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('.'));
 });
  
 gulp.task('test', ['build'], function () {
@@ -23,6 +23,6 @@ gulp.task('test', ['build'], function () {
       }));
 });
 
-gulp.task('tdd', function () {
+gulp.task('tdd', ['test'], function () {
   return gulp.watch([tests, src], ['test']);
 });

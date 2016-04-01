@@ -1,12 +1,15 @@
+import Destination from './destination';
 
 /**
  * EmailDestination class
  * @abstract
  * @type {Destination}
  */
-export default class EmailDestination {
+export default class EmailDestination extends Destination {
 
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   setToAddress(addr) {
     throw new TypeError('setToAddress must be implemented');
@@ -14,9 +17,5 @@ export default class EmailDestination {
 
   setFromAddress(addr) {
     throw new TypeError('setFromAddress must be implemented');
-  }
-
-  send(src) {
-    throw new TypeError('send must be implemented');
   }
 }

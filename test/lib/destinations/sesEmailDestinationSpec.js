@@ -1,6 +1,6 @@
 import should from 'should';
 import sinon from 'sinon';
-import SESEmailDestination from '../../../dist/lib/destinations/sesEmailDestination';
+import SESEmailDestination from '../../../lib/destinations/sesEmailDestination';
 
 describe('----------------- SESEmailDestination Tests -----------------', () => {
   it('should throw if an emailAddress is not provided', () => {
@@ -26,9 +26,9 @@ describe('----------------- SESEmailDestination Tests -----------------', () => 
     });
 
 
-    it('should implement #send', () => {
+    it('should implement #send', async () => {
       try {
-        email.send();
+        await email.send();
       } catch (err) {
         should.not.exist(err);
       }

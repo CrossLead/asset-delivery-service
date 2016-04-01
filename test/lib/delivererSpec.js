@@ -1,8 +1,8 @@
 import should from 'should';
 import sinon from 'sinon';
-import Deliverer from '../../dist/lib/deliverer';
-import EmailDestination from '../../dist/lib/destinations/emailDestination';
-import Source from '../../dist/lib/sources/source';
+import Deliverer from '../../lib/deliverer';
+import EmailDestination from '../../lib/destinations/emailDestination';
+import Source from '../../lib/sources/source';
 
 describe('----------------- Deliverer Tests -----------------', () => {
   
