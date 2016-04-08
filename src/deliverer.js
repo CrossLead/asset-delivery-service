@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 /**
  * @class Deliverer
@@ -11,19 +12,8 @@ export default class Deliverer {
    * @param  {Destination[]} [destinations]
    */
   constructor(sources, destinations) {
-    if (sources) {
-      this._sources = sources instanceof Array 
-            ? sources : [sources];
-    } else {
-      this._sources = [];
-    }
-    
-    if (destinations) {
-      this._destinations = destinations instanceof Array 
-                 ? destinations : [destinations];
-    } else {
-      this._destinations = [];
-    }
+    set.apply(this, ['_sources', sources]);
+    set.apply(this, ['_destinations', destinations]);
   }
 
   /**
@@ -31,9 +21,11 @@ export default class Deliverer {
    * @return {Promise}
    */
   async send() {
-    return await this._destinations.forEach(dest => {
-      this._sources.forEach(src => dest.send(src));
+    const promises = this._destinations.map( dest => {
+      return this._sources.map( async (src) => await dest.send(src.getAssets()));
     });
+
+    await Promise.all( _.flattenDeep(promises) );
   }
 
   /**
@@ -42,15 +34,29 @@ export default class Deliverer {
    * @param {Source|Source[]} src
    */
   setSrc(src) {
-    if (src instanceof Array) {
-      this._sources = src;
-    } else {
-      this._sources = [src];
-    }
+    set.apply(this, ['_sources', src]);
   }
 
+  /**
+   * @alias setSrc
+   */
+  setSource(src) {
+    set.apply(this, ['_sources', src]);
+  }
+
+  /**
+   * Push a source to the sources collection
+   * @param {Source} src
+   */
   addSrc(src) {
-    this._sources.push(src)
+    add.apply(this, ['_sources', src]);
+  }
+
+  /**
+   * @alias addSrc
+   */
+  addSource(src) {
+    add.apply(this, ['_sources', src]);
   }
 
   /**
@@ -58,11 +64,14 @@ export default class Deliverer {
    * @param {Destination|Destination[]} dest
    */
   setDest(dest) {
-    if (dest instanceof Array) {
-      this._destination = dest;
-    } else {
-      this._destinations = [dest];
-    }
+    set.apply(this, ['_destinations', dest]);
+  }
+
+  /**
+   * @alias setDest
+   */
+  setDestination(dest) {
+    set.apply(this, ['_destinations', dest]);
   }
 
   /**
@@ -70,6 +79,25 @@ export default class Deliverer {
    * @param {Destination} dest
    */
   addDest(dest) {
-    this._destination.push(dest);
+    add.apply(this, ['_destinations', dest]);
   }
+
+  /**
+   * @alias addDest
+   */
+  addDestination(dest) {
+    add.apply(this, ['_destinations', dest]);
+  }
+}
+
+function set(type, data) {
+  if (data instanceof Array) {
+    this[type] = data;
+  } else {
+    this[type] = data ? [data] : [];
+  }
+}
+
+function add(type, data) {
+  this[type].push(data);
 }

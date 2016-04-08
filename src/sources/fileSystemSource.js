@@ -24,6 +24,6 @@ export default class FileSystemSource extends Source {
    * @return {Stream}
    */
   async getAssets() {
-    return await fs.createReadStream(this._path);
+    return fs.createReadStream(this._path);
   }
 }

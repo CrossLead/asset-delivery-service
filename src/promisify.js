@@ -16,7 +16,7 @@ export default function (original, settings) {
           return reject(err);
         };
 
-        if (false === !! multipleArguments) {
+        if (!multipleArguments) {
           return resolve(args[0])
         }
 
