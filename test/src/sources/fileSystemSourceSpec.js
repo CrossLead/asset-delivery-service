@@ -1,7 +1,7 @@
 import should from 'should';
 import path from 'path';
 import fs from 'fs';
-import FileSystemSource from '../../../lib/sources/fileSystemSource';
+import FileSystemSource from '../../../src/sources/fileSystemSource';
 
 describe('----------------- FileSystemSource Tests -----------------', () => {
 
@@ -26,7 +26,7 @@ describe('----------------- FileSystemSource Tests -----------------', () => {
 
   context('#getAssets', () => {
     beforeEach(() => {
-      const file = path.join(__dirname, '../../fixtures/foo.txt');
+      const file = path.join(__dirname, '../..', '/fixtures/foo.txt');
       source = new FileSystemSource(file);
     });
 

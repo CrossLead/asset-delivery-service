@@ -1,5 +1,5 @@
 import should from 'should';
-import EmailDestination from '../../../lib/destinations/emailDestination';
+import EmailDestination from '../../../src/destinations/emailDestination';
 
 describe('----------------- EmailDestination Tests -----------------', () => {
   it('should throw if an email address is not provided', () => {

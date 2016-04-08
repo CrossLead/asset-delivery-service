@@ -1,7 +1,7 @@
 import should from 'should';
 import sinon from 'sinon';
 import AWS from 'aws-sdk';
-import S3Source from '../../../lib/sources/s3Source';
+import S3Source from '../../../src/sources/s3Source';
 
 describe('----------------- s3Source Tests -----------------', () => {
 

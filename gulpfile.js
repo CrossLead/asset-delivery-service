@@ -1,5 +1,4 @@
 require('babel-register');
-require('babel-polyfill');
 
 var src = 'src/**/*.js',
   tests = 'test/**/*.js',
@@ -13,7 +12,7 @@ gulp.task('build', function () {
     .pipe(sourcemaps.init())
     .pipe(babel())
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('.'));
+    .pipe(gulp.dest('lib'));
 });
  
 gulp.task('test', ['build'], function () {

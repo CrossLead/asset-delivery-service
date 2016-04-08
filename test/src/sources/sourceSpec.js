@@ -1,4 +1,4 @@
-import Source from '../../../lib/sources/source';
+import Source from '../../../src/sources/source';
 
 describe('----------------- Source Tests -----------------', () => {
 

@@ -1,6 +1,6 @@
 import should from 'should';
 import sinon from 'sinon';
-import SESEmailDestination from '../../../lib/destinations/sesEmailDestination';
+import SESEmailDestination from '../../../src/destinations/sesEmailDestination';
 
 describe('----------------- SESEmailDestination Tests -----------------', () => {
   it('should throw if an emailAddress is not provided', () => {
