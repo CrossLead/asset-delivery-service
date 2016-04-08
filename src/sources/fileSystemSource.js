@@ -6,15 +6,11 @@ export default class FileSystemSource extends Source {
   constructor(path) {
     super();
 
-
-    let doesPathExist;
+    let doesPathExist = false;
 
     try {
-      fs.accessSync(path);
-      doesPathExist = true;
-    } catch (err) {
-      doesPathExist = false;
-    }
+      doesPathExist = !!fs.statSync(path);
+    } catch (err) {}
 
     if (!path || !doesPathExist) {
       throw new Error('file path required');
