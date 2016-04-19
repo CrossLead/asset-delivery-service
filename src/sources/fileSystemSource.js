@@ -17,15 +17,15 @@ export default class FileSystemSource extends Source {
       throw new Error('file path required');
     }
 
-    this.createReadStreamAsync = promisify(fs.createReadStream);
+    this.readFileAsync = promisify(fs.readFile);
     this._path = path;
   }
 
   /**
    * Get file system assets
-   * @return {Stream}
+   * @return {Buffer}
    */
   async getAssets() {
-    return this.createReadStreamAsync(this._path);
+    return this.readFileAsync(this._path);
   }
 }

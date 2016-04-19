@@ -1,6 +1,5 @@
 import should from 'should';
 import path from 'path';
-import fs from 'fs';
 import FileSystemSource from '../../../src/sources/fileSystemSource';
 
 describe('----------------- FileSystemSource Tests -----------------', () => {
@@ -40,11 +39,10 @@ describe('----------------- FileSystemSource Tests -----------------', () => {
       }
     });
 
-    it('should return a Promise to return a ReadStream', async () => {
+    it('should return a Promise to return a Buffer', async () => {
       source.getAssets().should.be.instanceOf(Promise);
-
       const test = await source.getAssets();
-      test.should.be.instanceOf(fs.ReadStream);
+      test.should.be.instanceOf(Buffer);
     });
 
   });
