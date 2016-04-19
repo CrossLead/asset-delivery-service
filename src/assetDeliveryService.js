@@ -19,3 +19,5 @@ export { S3Source };
 export { FileSystemSource };
 export { SESEmailDestination };
 export { S3Destination };
+
+const deliverer = new Deliverer;

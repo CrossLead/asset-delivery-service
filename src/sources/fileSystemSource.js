@@ -1,5 +1,6 @@
 import Source from './source';
 import fs from 'fs';
+import promisify from 'es6-promisify';
 
 export default class FileSystemSource extends Source {
 
@@ -16,6 +17,7 @@ export default class FileSystemSource extends Source {
       throw new Error('file path required');
     }
 
+    this.createReadStreamAsync = promisify(fs.createReadStream);
     this._path = path;
   }
 
@@ -24,6 +26,6 @@ export default class FileSystemSource extends Source {
    * @return {Stream}
    */
   async getAssets() {
-    return fs.createReadStream(this._path);
+    return this.createReadStreamAsync(this._path);
   }
 }

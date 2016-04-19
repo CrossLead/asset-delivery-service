@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Source from './source';
-import promisify from '../promisify';
+import promisify from 'es6-promisify';
 import AWS from 'aws-sdk';
 
 export default class S3Source extends Source {

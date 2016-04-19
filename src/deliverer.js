@@ -12,8 +12,8 @@ export default class Deliverer {
    * @param  {Destination[]} [destinations]
    */
   constructor(sources, destinations) {
-    set.apply(this, ['_sources', sources]);
-    set.apply(this, ['_destinations', destinations]);
+    set.call(this, '_sources', sources);
+    set.call(this, '_destinations', destinations);
   }
 
   /**
@@ -22,7 +22,8 @@ export default class Deliverer {
    */
   async send() {
     const promises = this._destinations.map( dest => {
-      return this._sources.map( async (src) => await dest.send(src.getAssets()));
+      return this._sources.map( async (src) => 
+        await dest.send(src.getAssets()));
     });
 
     await Promise.all( _.flattenDeep(promises) );
@@ -34,14 +35,14 @@ export default class Deliverer {
    * @param {Source|Source[]} src
    */
   setSrc(src) {
-    set.apply(this, ['_sources', src]);
+    set.call(this, '_sources', src);
   }
 
   /**
    * @alias setSrc
    */
   setSource(src) {
-    set.apply(this, ['_sources', src]);
+    set.call(this, '_sources', src);
   }
 
   /**
@@ -49,14 +50,14 @@ export default class Deliverer {
    * @param {Source} src
    */
   addSrc(src) {
-    add.apply(this, ['_sources', src]);
+    add.call(this, '_sources', src);
   }
 
   /**
    * @alias addSrc
    */
   addSource(src) {
-    add.apply(this, ['_sources', src]);
+    add.call(this, '_sources', src);
   }
 
   /**
@@ -64,14 +65,14 @@ export default class Deliverer {
    * @param {Destination|Destination[]} dest
    */
   setDest(dest) {
-    set.apply(this, ['_destinations', dest]);
+    set.call(this, '_destinations', dest);
   }
 
   /**
    * @alias setDest
    */
   setDestination(dest) {
-    set.apply(this, ['_destinations', dest]);
+    set.call(this, '_destinations', dest);
   }
 
   /**
@@ -79,14 +80,14 @@ export default class Deliverer {
    * @param {Destination} dest
    */
   addDest(dest) {
-    add.apply(this, ['_destinations', dest]);
+    add.call(this, '_destinations', dest);
   }
 
   /**
    * @alias addDest
    */
   addDestination(dest) {
-    add.apply(this, ['_destinations', dest]);
+    add.call(this, '_destinations', dest);
   }
 }
 
