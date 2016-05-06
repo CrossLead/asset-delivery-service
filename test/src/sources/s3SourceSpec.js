@@ -1,7 +1,7 @@
 import should from 'should';
 import sinon from 'sinon';
 import AWS from 'aws-sdk';
-import S3Source from '../../../lib/sources/s3Source';
+import S3Source from '../../../src/sources/s3Source';
 
 describe('----------------- s3Source Tests -----------------', () => {
 
@@ -27,11 +27,12 @@ describe('----------------- s3Source Tests -----------------', () => {
   });
 
   context('#getAssets', () => {
-    let listObjectsAsyncStub, s3;
+    let listObjectsAsyncStub, s3,
+      AWS_CREDS = {};
 
     beforeEach(() => {
       listObjectsAsyncStub = sinon.stub();
-      s3 = new S3Source('clp-test-resources');
+      s3 = new S3Source('clp-test-resources', AWS_CREDS);
       s3._s3.listObjectsAsync = listObjectsAsyncStub;
       s3._s3.listObjectsAsync.returns(listObjectsResponse);
     });

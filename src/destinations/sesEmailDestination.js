@@ -1,6 +1,6 @@
 import EmailDestination from './emailDestination';
 import AWS from 'aws-sdk';
-import Promise from 'bluebird';
+import promisify from 'es6-promisify';
 
 /**
  * SESDestination @class
@@ -8,11 +8,18 @@ import Promise from 'bluebird';
  */
 export default class SESEmailDestination extends EmailDestination {
 
-  constructor() {
+  /**
+   * @param {Object} awsCredentials AWS credentials config object
+   */
+  constructor(awsCredentials) {
     super();
+
+    if (!awsCredentials) {
+      throw new Error('AWS credentials required');
+    }
     
-    this.ses = new AWS.SES();
-    Promise.promisifyAll(this.ses);
+    this.ses = new AWS.SES(awsCredentials);
+    this.ses.sendEmailAsync = promisify(this.ses.sendEmail, this.ses);
   }
 
   async send(src) {
@@ -22,7 +29,7 @@ export default class SESEmailDestination extends EmailDestination {
         Source: this._fromAddress,
         Message: {
           Body: {
-            Text: {Data: src}
+            Text: {Data: 'hello world'}
           },
           Subject: {
             Data: this._messageSubject

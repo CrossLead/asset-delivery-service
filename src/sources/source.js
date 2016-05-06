@@ -6,7 +6,7 @@ export default class Source {
 
   constructor() {}
 
-  getAssets() {
+  async getAssets() {
     throw new TypeError('getAssets must be implemented');
   }
 }

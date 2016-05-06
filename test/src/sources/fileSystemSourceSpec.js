@@ -1,7 +1,6 @@
 import should from 'should';
 import path from 'path';
-import fs from 'fs';
-import FileSystemSource from '../../../lib/sources/fileSystemSource';
+import FileSystemSource from '../../../src/sources/fileSystemSource';
 
 describe('----------------- FileSystemSource Tests -----------------', () => {
 
@@ -26,7 +25,7 @@ describe('----------------- FileSystemSource Tests -----------------', () => {
 
   context('#getAssets', () => {
     beforeEach(() => {
-      const file = path.join(__dirname, '../../fixtures/foo.txt');
+      const file = path.join(__dirname, '../..', '/fixtures/foo.txt');
       source = new FileSystemSource(file);
     });
 
@@ -40,8 +39,11 @@ describe('----------------- FileSystemSource Tests -----------------', () => {
       }
     });
 
-    it('should return a stream', () => {
-      source.getAssets().should.be.instanceOf(fs.ReadStream);
+    it('should return a Promise to return a Buffer', async () => {
+      source.getAssets().should.be.instanceOf(Promise);
+      const test = await source.getAssets();
+      test.should.be.instanceOf(Buffer);
     });
+
   });
 });

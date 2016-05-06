@@ -1,3 +1,5 @@
+require('babel-polyfill');
+
 import Deliverer from './deliverer';
 import S3Source from './sources/s3Source';
 import FileSystemSource from './sources/fileSystemSource';
@@ -17,3 +19,5 @@ export { S3Source };
 export { FileSystemSource };
 export { SESEmailDestination };
 export { S3Destination };
+
+const deliverer = new Deliverer;

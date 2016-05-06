@@ -1,23 +1,29 @@
+import _ from 'lodash';
 import Source from './source';
-import Promise from 'bluebird';
+import promisify from 'es6-promisify';
 import AWS from 'aws-sdk';
 
 export default class S3Source extends Source {
 
   /**
-   * @param  {String] bucketName
+   * @param {String} bucketName
+   * @param {Object} awsCredentials
    */
-  constructor(bucketName) {
+  constructor(bucketName, awsCredentials) {
     super();
 
     if (!bucketName) {
       throw new Error('S3 bucket name required');
     }
 
+    if (!awsCredentials) {
+      throw new Error('AWS credentials required');
+    }
+
     this._bucket = bucketName;
 
-    this._s3 = new AWS.S3({ params: { Bucket: this._bucket }});
-    Promise.promisifyAll(Object.getPrototypeOf(this._s3));
+    this._s3 = new AWS.S3(_.assign({ params: { Bucket: this._bucket }}, awsCredentials));
+    this._s3.listObjectsAsync = promisify(this._s3.listObjects);
   }
 
   /**
@@ -30,14 +36,4 @@ export default class S3Source extends Source {
       return `${this._s3.endpoint.href}${this._bucket}/${s3Obj.Key}`;
     });
   }
-}
-
-/**
- * Validate the S3 env properties
- * @private
- * @return {Boolean}
- */
-function hasValidS3Env() {
-  return !!process.env.AWS_ACCESS_KEY_ID && 
-         !!process.env.AWS_SECRET_ACCESS_KEY;
 }

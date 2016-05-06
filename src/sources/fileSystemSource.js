@@ -1,33 +1,31 @@
 import Source from './source';
 import fs from 'fs';
+import promisify from 'es6-promisify';
 
 export default class FileSystemSource extends Source {
 
   constructor(path) {
     super();
 
-
-    let doesPathExist;
+    let doesPathExist = false;
 
     try {
-      fs.accessSync(path);
-      doesPathExist = true;
-    } catch (err) {
-      doesPathExist = false;
-    }
+      doesPathExist = !!fs.statSync(path);
+    } catch (err) {}
 
     if (!path || !doesPathExist) {
       throw new Error('file path required');
     }
 
+    this.readFileAsync = promisify(fs.readFile);
     this._path = path;
   }
 
   /**
    * Get file system assets
-   * @return {Stream}
+   * @return {Buffer}
    */
-  getAssets() {
-    return fs.createReadStream(this._path);
+  async getAssets() {
+    return this.readFileAsync(this._path);
   }
 }
