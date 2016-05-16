@@ -19,21 +19,27 @@ export default class SESEmailDestination extends EmailDestination {
     }
     
     this.ses = new AWS.SES(awsCredentials);
-    this.ses.sendEmailAsync = promisify(this.ses.sendEmail, this.ses);
+    this.ses.sendEmailAsync = promisify(this.ses.sendRawEmail, this.ses);
   }
 
-  async send(src) {
+  async send(src, filePath) {
     try {
+      const filePathArr = filePath.split('/');
+      const message = [
+      'To: ' + this._toAddress,
+      '\nSubject: Screenshots for ' + this._messageSubject,
+      '\nContent-Type: image/png',
+      '\nContent-Transfer-Encoding: base64',
+      '\nContent-Disposition: inline; filename="' + filePathArr[filePathArr.length - 1] + '"',
+      '\n',
+      '\n' + src.toString('base64'),
+      '\n'
+      ];
+
       return await this.ses.sendEmailAsync({
-        Destination: { ToAddresses: [this._toAddress] },
         Source: this._fromAddress,
-        Message: {
-          Body: {
-            Text: {Data: 'hello world'}
-          },
-          Subject: {
-            Data: this._messageSubject
-          }
+        RawMessage:{
+          Data: message.join('')
         }
       });
     } catch (err) {
