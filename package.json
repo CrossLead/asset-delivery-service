@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "gulp test",
-    "preinstall": "gulp build",
+    "preinstall": "./node_modules/gulp/bin/gulp.js build",
     "prepublish": "gulp build"
   },
   "repository": {
@@ -40,13 +40,15 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.7.2",
     "babel-runtime": "^6.6.1",
-    "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-mocha": "^2.2.0",
     "gulp-sourcemaps": "^1.6.0",
     "mocha": "^2.4.5",
     "should": "^8.3.0",
     "sinon": "^1.17.3"
+  },
+  "dependencies":{
+    "gulp": "^3.9.1"
   },
   "babel": {
     "presets": [
