@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "gulp test",
+    "preinstall": "gulp build",
     "prepublish": "gulp build"
   },
   "repository": {
