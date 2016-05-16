@@ -43,6 +43,26 @@ describe('----------------- Deliverer Tests -----------------', () => {
         })
         .then(done);
     });
+
+    it('should send an email', () => {
+      
+      const accessKeyId = 'AKIAI5DVBKE4XIMIDMRA';
+      const secretAccessKey = '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';
+      const region = 'us-east-1';
+
+      const deliverer = new Deliverer;
+      const file = new FileSystemSource(path.join(__dirname, '../', '/fixtures/foo.txt'));
+      const email = new SESEmailDestination({accessKeyId, secretAccessKey, region});
+
+      email.setToAddress('isoung@tapqa.com');
+      email.setFromAddress('support@crosslead.com');
+      email.setMessageSubject(`gulp test`);
+
+      deliverer.addDest(email);
+      deliverer.addSrc(file);
+
+      deliverer.send();
+    });
   });
 
   context('#setSrc', () => {
