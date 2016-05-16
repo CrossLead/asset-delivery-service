@@ -24,7 +24,7 @@ export default class Deliverer {
     const promises = this._destinations.map( dest => {
       return this._sources.map( async (src) => {
         const assets = await src.getAssets();
-        const filePath = await src._path;
+        const filePath = src._path;
         await dest.send(assets, filePath);
       })
     });

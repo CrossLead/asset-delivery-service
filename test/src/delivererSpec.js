@@ -3,6 +3,9 @@ import sinon from 'sinon';
 import Deliverer from '../../src/deliverer';
 import EmailDestination from '../../src/destinations/emailDestination';
 import Source from '../../src/sources/source';
+import SESEmailDestination from '../../src/destinations/sesEmailDestination';
+import FileSystemSource from '../../src/sources/fileSystemSource';
+import path from 'path';
 
 describe('----------------- Deliverer Tests -----------------', () => {
   
@@ -27,16 +30,18 @@ describe('----------------- Deliverer Tests -----------------', () => {
   });
 
   context('#send', () => {
-    it('should call the EmailDestination#send with a Source object', () => {
-      const mockDest = sinon.mock(new EmailDestination('eduncan@tapqa.com'));
+    it('should call the EmailDestination#send with a Source object', done => {
+      const mockDest = sinon.mock(new EmailDestination('isoung@tapqa.com'));
       const stub = sinon.stub(new Source);
       mockDest.expects('send').calledWithExactly(stub);
 
       deliverer = new Deliverer(stub, [mockDest.object]);
-      deliverer.send();
-
-      mockDest.verify();
-      mockDest.restore();
+      deliverer.send()
+        .then(() => {
+          mockDest.verify();
+          mockDest.restore();
+        })
+        .then(done);
     });
   });
 

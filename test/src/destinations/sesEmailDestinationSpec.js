@@ -5,7 +5,7 @@ import SESEmailDestination from '../../../src/destinations/sesEmailDestination';
 describe('----------------- SESEmailDestination Tests -----------------', () => {
   it('should throw if an emailAddress is not provided', () => {
     try {
-      new SESEmailDestination('eduncan@tapqa.com');
+      new SESEmailDestination('isoung@tapqa.com');
     } catch (err) {
       should.exist(err.message);
     }
@@ -16,7 +16,7 @@ describe('----------------- SESEmailDestination Tests -----------------', () => 
       responseObj = { ResponseMetadata: { RequestId: 'foo' }, MessageId: 'bar' };
 
     beforeEach(() => {
-      email = new SESEmailDestination('eduncan@tapqa.com');
+      email = new SESEmailDestination('isoung@tapqa.com');
       email.ses.sendEmailAsync = sinon.stub();
       email.ses.sendEmailAsync.returns(responseObj);
     });
@@ -28,14 +28,14 @@ describe('----------------- SESEmailDestination Tests -----------------', () => 
 
     it('should implement #send', async () => {
       try {
-        await email.send();
+        await email.send('src', 'filePath');
       } catch (err) {
         should.not.exist(err);
       }
     });
 
     it('should return a Response object', async () => {
-      const test = await email.send();
+      const test = await email.send('src', 'filePath');
 
       test.should.be.instanceOf(Object)
         .and.have.property('ResponseMetadata');
