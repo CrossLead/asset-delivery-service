@@ -5,7 +5,7 @@ import SESEmailDestination from '../../../src/destinations/sesEmailDestination';
 describe('----------------- SESEmailDestination Tests -----------------', () => {
   it('should throw if an emailAddress is not provided', () => {
     try {
-      new SESEmailDestination('isoung@tapqa.com');
+      new SESEmailDestination(process.env.AWS_SOURCE_EMAIL);
     } catch (err) {
       should.exist(err.message);
     }
@@ -16,7 +16,7 @@ describe('----------------- SESEmailDestination Tests -----------------', () => 
       responseObj = { ResponseMetadata: { RequestId: 'foo' }, MessageId: 'bar' };
 
     beforeEach(() => {
-      email = new SESEmailDestination('isoung@tapqa.com');
+      email = new SESEmailDestination(process.env.AWS_SOURCE_EMAIL);
       email.ses.sendEmailAsync = sinon.stub();
       email.ses.sendEmailAsync.returns(responseObj);
     });

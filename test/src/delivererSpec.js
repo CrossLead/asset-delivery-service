@@ -31,7 +31,7 @@ describe('----------------- Deliverer Tests -----------------', () => {
 
   context('#send', () => {
     it('should call the EmailDestination#send with a Source object', done => {
-      const mockDest = sinon.mock(new EmailDestination('isoung@tapqa.com'));
+      const mockDest = sinon.mock(new EmailDestination(process.env.AWS_EMAIL_LISTS));
       const stub = sinon.stub(new Source);
       mockDest.expects('send').calledWithExactly(stub);
 
@@ -46,17 +46,17 @@ describe('----------------- Deliverer Tests -----------------', () => {
 
     it('should send an email', () => {
       
-      const accessKeyId = 'AKIAI5DVBKE4XIMIDMRA';
-      const secretAccessKey = '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';
+      const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+      const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
       const region = 'us-east-1';
 
       const deliverer = new Deliverer;
       const file = new FileSystemSource(path.join(__dirname, '../', '/fixtures/foo.txt'));
       const email = new SESEmailDestination({accessKeyId, secretAccessKey, region});
 
-      email.setToAddress('isoung@tapqa.com');
-      email.setFromAddress('support@crosslead.com');
-      email.setMessageSubject(`gulp test`);
+      email.setToAddress(process.env.AWS_RECIPIENT_LIST.split(','));
+      email.setFromAddress(process.env.AWS_SOURCE_EMAIL);
+      email.setMessageSubject(`unit test email`);
 
       deliverer.addDest(email);
       deliverer.addSrc(file);
