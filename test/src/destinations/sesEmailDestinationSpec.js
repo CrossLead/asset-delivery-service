@@ -5,7 +5,7 @@ import SESEmailDestination from '../../../src/destinations/sesEmailDestination';
 describe('----------------- SESEmailDestination Tests -----------------', () => {
   it('should throw if an emailAddress is not provided', () => {
     try {
-      new SESEmailDestination(process.env.AWS_SOURCE_EMAIL);
+      new SESEmailDestination();
     } catch (err) {
       should.exist(err.message);
     }
@@ -28,14 +28,14 @@ describe('----------------- SESEmailDestination Tests -----------------', () => 
 
     it('should implement #send', async () => {
       try {
-        await email.send('src', 'filePath');
+        await email.send([], 'filePath');
       } catch (err) {
         should.not.exist(err);
       }
     });
 
     it('should return a Response object', async () => {
-      const test = await email.send('src', 'filePath');
+      const test = await email.send([], 'filePath');
 
       test.should.be.instanceOf(Object)
         .and.have.property('ResponseMetadata');

@@ -16,7 +16,8 @@ describe('----------------- FileSystemSource Tests -----------------', () => {
 
   it('should throw an error if the path does not exist', () => {
     try {
-      source = new FileSystemSource('foo/bar');
+      source = new FileSystemSource;
+      source.addAssets('foo/bar');
       (false).should.be.true;
     } catch (err) {
       should.exist(err);
@@ -25,24 +26,33 @@ describe('----------------- FileSystemSource Tests -----------------', () => {
 
   context('#getAssets', () => {
     beforeEach(() => {
-      const file = path.join(__dirname, '../..', '/fixtures/foo.txt');
-      source = new FileSystemSource(file);
+      source = new FileSystemSource;
     });
 
     it('should implement getAssets', () => {
+      const file = path.join(__dirname, '../..', '/fixtures/foo.txt');
       source.should.have.property('getAssets')
         .and.is.instanceOf(Function);
       try {
-        source.getAssets();
+        source.getAssets(file);
       } catch (err) {
         should.not.exist(err);
       }
     });
 
-    it('should return a Promise to return a Buffer', async () => {
-      source.getAssets().should.be.instanceOf(Promise);
-      const test = await source.getAssets();
-      test.should.be.instanceOf(Buffer);
+    it('should implement addAssets', () => {
+      const file = path.join(__dirname, '../..', '/fixtures/foo.txt');
+      source.should.have.property('addAssets')
+        .and.is.instanceOf(Function);
+      try {
+        source.addAssets(file);
+      } catch (err) {
+        should.not.exist(err);
+      }
+    });
+
+    it('should return a Buffer', () => {
+      source.getAssets(path.join(__dirname, '../..', '/fixtures/foo.txt')).should.be.instanceOf(Buffer);
     });
 
   });

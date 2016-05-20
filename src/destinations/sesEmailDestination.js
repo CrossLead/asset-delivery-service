@@ -22,19 +22,23 @@ export default class SESEmailDestination extends EmailDestination {
     this.ses.sendEmailAsync = promisify(this.ses.sendRawEmail, this.ses);
   }
 
-  async send(src, filePath) {
+  async send(assetArray, src) {
     try {
-      const filePathArr = filePath.split('/');
-      const message = [
-      'To: ' + this._toAddress,
-      '\nSubject: Screenshots for ' + this._messageSubject,
-      '\nContent-Type: image/png',
-      '\nContent-Transfer-Encoding: base64',
-      '\nContent-Disposition: inline; filename="' + filePathArr[filePathArr.length - 1] + '"',
-      '\n',
-      '\n' + src.toString('base64'),
-      '\n'
-      ];
+      const message = ['To: ' + this._toAddress];
+      (process.env.TRAVIS_COMMIT != undefined) ? message.push('\nSubject: Commit ' + process.env.TRAVIS_COMMIT) :  message.push('\nSubject: ' + this._messageSubject);
+      message.push('\nContent-Type: multipart/mixed; boundary="simple boundary"');
+
+      for(var element in assetArray) {
+        const filePathArr = element.split('/');
+        message.push('\n');
+        message.push('\n--simple boundary');
+        message.push('\nContent-Type: image/png');
+        message.push('\nContent-Transfer-Encoding: base64');
+        message.push('\nContent-Disposition: inline; filename="' + filePathArr[filePathArr.length - 1] + '"');
+        message.push('\n');
+        message.push('\n' + assetArray[element].toString('base64'));
+        message.push('\n');
+      }
 
       return await this.ses.sendEmailAsync({
         Source: this._fromAddress,

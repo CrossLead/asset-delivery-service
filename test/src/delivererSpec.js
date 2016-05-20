@@ -44,14 +44,14 @@ describe('----------------- Deliverer Tests -----------------', () => {
         .then(done);
     });
 
-    it('should send an email', () => {
-      
+    it('should send an email', function(){
       const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
       const region = 'us-east-1';
 
       const deliverer = new Deliverer;
-      const file = new FileSystemSource(path.join(__dirname, '../', '/fixtures/foo.txt'));
+      const file = new FileSystemSource;
+      file.addAssets(path.join(__dirname, '../', '/fixtures/foo.txt'));
       const email = new SESEmailDestination({accessKeyId, secretAccessKey, region});
 
       email.setToAddress(process.env.AWS_RECIPIENT_LIST.split(','));
