@@ -19,21 +19,31 @@ export default class SESEmailDestination extends EmailDestination {
     }
     
     this.ses = new AWS.SES(awsCredentials);
-    this.ses.sendEmailAsync = promisify(this.ses.sendEmail, this.ses);
+    this.ses.sendEmailAsync = promisify(this.ses.sendRawEmail, this.ses);
   }
 
-  async send(src) {
+  async send(assetArray, src) {
     try {
+      const message = ['To: ' + this._toAddress];
+      (process.env.TRAVIS_COMMIT != undefined) ? message.push('\nSubject: Commit ' + process.env.TRAVIS_COMMIT) :  message.push('\nSubject: ' + this._messageSubject);
+      message.push('\nContent-Type: multipart/mixed; boundary="simple boundary"');
+
+      for(var element in assetArray) {
+        const filePathArr = element.split('/');
+        message.push('\n');
+        message.push('\n--simple boundary');
+        message.push('\nContent-Type: image/png');
+        message.push('\nContent-Transfer-Encoding: base64');
+        message.push('\nContent-Disposition: inline; filename="' + filePathArr[filePathArr.length - 1] + '"');
+        message.push('\n');
+        message.push('\n' + assetArray[element].toString('base64'));
+        message.push('\n');
+      }
+
       return await this.ses.sendEmailAsync({
-        Destination: { ToAddresses: [this._toAddress] },
         Source: this._fromAddress,
-        Message: {
-          Body: {
-            Text: {Data: 'hello world'}
-          },
-          Subject: {
-            Data: this._messageSubject
-          }
+        RawMessage:{
+          Data: message.join('')
         }
       });
     } catch (err) {

@@ -3,6 +3,9 @@ import sinon from 'sinon';
 import Deliverer from '../../src/deliverer';
 import EmailDestination from '../../src/destinations/emailDestination';
 import Source from '../../src/sources/source';
+import SESEmailDestination from '../../src/destinations/sesEmailDestination';
+import FileSystemSource from '../../src/sources/fileSystemSource';
+import path from 'path';
 
 describe('----------------- Deliverer Tests -----------------', () => {
   
@@ -27,16 +30,38 @@ describe('----------------- Deliverer Tests -----------------', () => {
   });
 
   context('#send', () => {
-    it('should call the EmailDestination#send with a Source object', () => {
-      const mockDest = sinon.mock(new EmailDestination('eduncan@tapqa.com'));
+    it('should call the EmailDestination#send with a Source object', done => {
+      const mockDest = sinon.mock(new EmailDestination(process.env.AWS_EMAIL_LISTS));
       const stub = sinon.stub(new Source);
       mockDest.expects('send').calledWithExactly(stub);
 
       deliverer = new Deliverer(stub, [mockDest.object]);
-      deliverer.send();
+      deliverer.send()
+        .then(() => {
+          mockDest.verify();
+          mockDest.restore();
+        })
+        .then(done);
+    });
 
-      mockDest.verify();
-      mockDest.restore();
+    it('should send an email', function(){
+      const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+      const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+      const region = 'us-east-1';
+
+      const deliverer = new Deliverer;
+      const file = new FileSystemSource;
+      file.addAssets(path.join(__dirname, '../', '/fixtures/foo.txt'));
+      const email = new SESEmailDestination({accessKeyId, secretAccessKey, region});
+
+      email.setToAddress(process.env.AWS_RECIPIENT_LIST.split(','));
+      email.setFromAddress(process.env.AWS_SOURCE_EMAIL);
+      email.setMessageSubject(`unit test email`);
+
+      deliverer.addDest(email);
+      deliverer.addSrc(file);
+
+      deliverer.send();
     });
   });
 

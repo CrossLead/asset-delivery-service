@@ -4,28 +4,40 @@ import promisify from 'es6-promisify';
 
 export default class FileSystemSource extends Source {
 
-  constructor(path) {
+  constructor() {
     super();
 
-    let doesPathExist = false;
-
-    try {
-      doesPathExist = !!fs.statSync(path);
-    } catch (err) {}
-
-    if (!path || !doesPathExist) {
-      throw new Error('file path required');
-    }
-
+    this._assetArray = [];
     this.readFileAsync = promisify(fs.readFile);
-    this._path = path;
   }
 
   /**
    * Get file system assets
    * @return {Buffer}
    */
-  async getAssets() {
-    return this.readFileAsync(this._path);
+  getAssets(path) {
+    return fs.readFileSync(path);
   }
+
+  /**
+   * Add file system assets
+   */
+   addAssets(path){
+    let doesPathExist = false;
+
+    try {
+      doesPathExist = !!fs.statSync(path);
+
+      if(doesPathExist){
+        const filePathArr = path.split('/');
+
+        return this._assetArray[filePathArr[filePathArr.length - 1]] = this.getAssets(path);
+      }
+      else{
+        throw new Error('file path was not found');
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
+   }
 }
