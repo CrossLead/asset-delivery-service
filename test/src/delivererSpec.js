@@ -47,7 +47,7 @@ describe('----------------- Deliverer Tests -----------------', () => {
     it('should send an email', function(){
       const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
       const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-      const region = 'us-east-1';
+      const region = process.env.AWS_REGION;
 
       const deliverer = new Deliverer;
       const file = new FileSystemSource;

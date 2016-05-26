@@ -23,11 +23,11 @@ export default class Deliverer {
   async send() {
     const promises = this._destinations.map( dest => {
       return this._sources.map( async (src) => {
-        await dest.send(src._assetArray, src);
+        dest.send(src._assetArray, src);
       })
     });
 
-   return await Promise.all( _.flattenDeep(promises) );
+   return Promise.all( _.flattenDeep(promises) );
   }
 
   /**
