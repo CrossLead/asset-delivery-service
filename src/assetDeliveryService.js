@@ -1,5 +1,3 @@
-require('babel-polyfill');
-
 import Deliverer from './deliverer';
 import S3Source from './sources/s3Source';
 import FileSystemSource from './sources/fileSystemSource';
